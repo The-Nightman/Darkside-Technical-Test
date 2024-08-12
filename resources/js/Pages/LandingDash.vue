@@ -22,23 +22,22 @@ defineProps<{
                     <DarkModeToggle />
                     <div
                         class="flex flex-col w-full p-8 rounded-2xl items-center bg-white dark:bg-gray-700 shadow-2xl select-none">
-                        <img src="../../images/dslogo.png"
-                            alt="Darkside Developments Company Logo">
+                        <img src="../../images/dslogo.png" alt="Darkside Developments Company Logo" draggable="false">
                         <h1 class="my-2 text-2xl text-center">Internal Customer Dashboard</h1>
                         <nav v-if="canLogin" class="mt-6 flex flex-col w-32 gap-2 text-center">
                             <Link v-if="$page.props.auth.user" :href="route('dashboard')"
-                                class="rounded-md px-3 py-2 bg-blue-400 hover:bg-blue-300 active:bg-blue-500 dark:bg-zinc-400 dark:hover:bg-slate-300 dark:active:bg-slate-500 text-black active:text-white ring-1 ring-transparent transition focus:outline-none focus-visible:ring-[#FF2D20] dark:hover:text-black dark:active:text-white dark:focus-visible:ring-white"
+                                class="px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-sm text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
                                 draggable="false">
                             Dashboard
                             </Link>
                             <template v-else>
                                 <Link :href="route('login')"
-                                    class="rounded-md px-3 py-2 bg-blue-400 hover:bg-blue-300 active:bg-blue-500 dark:bg-zinc-400 dark:hover:bg-slate-300 dark:active:bg-slate-500 text-black active:text-white ring-1 ring-transparent transition focus:outline-none focus-visible:ring-[#FF2D20] dark:hover:text-black dark:active:text-white dark:focus-visible:ring-white"
+                                    class="px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-sm text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
                                     draggable="false">
                                 Log in
                                 </Link>
                                 <Link v-if="canRegister" :href="route('register')"
-                                    class="rounded-md px-3 py-2 bg-blue-400 hover:bg-blue-300 active:bg-blue-500 dark:bg-zinc-400 dark:hover:bg-slate-300 dark:active:bg-slate-500 text-black active:text-white ring-1 ring-transparent transition focus:outline-none focus-visible:ring-[#FF2D20] dark:hover:text-black dark:active:text-white dark:focus-visible:ring-white"
+                                    class="px-4 py-2 bg-gray-800 dark:bg-gray-200 border border-transparent rounded-md font-semibold text-sm text-white dark:text-gray-800 uppercase tracking-widest hover:bg-gray-700 dark:hover:bg-white focus:bg-gray-700 dark:focus:bg-white active:bg-gray-900 dark:active:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 dark:focus:ring-offset-gray-800 transition ease-in-out duration-150"
                                     draggable="false">
                                 Register
                                 </Link>
