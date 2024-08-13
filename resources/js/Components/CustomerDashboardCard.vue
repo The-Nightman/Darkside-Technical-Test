@@ -1,8 +1,9 @@
 <script lang="ts" setup>
+import { CustomerCardData } from '@/types/customerCardData';
 import Dropdown from './Dropdown.vue';
 import DropdownLink from './DropdownLink.vue';
 
-defineProps<{ customer: any }>();
+defineProps<{ customer: CustomerCardData }>();
 
 </script>
 
@@ -42,8 +43,7 @@ defineProps<{ customer: any }>();
                 </template>
                 <!-- Dropdown Options -->
                 <template #content>
-                    <DropdownLink :href="route('dashboard')" as="button"> View </DropdownLink>
-                    <DropdownLink :href="route('dashboard')" as="button"> Edit </DropdownLink>
+                    <DropdownLink :href="route('customer.show', { id: customer.id })" as="button"> View </DropdownLink>
                     <DropdownLink class="bg-red-600/50 hover:bg-red-600 dark:hover:bg-red-600"
                         :href="route('dashboard')" as="button"> Delete </DropdownLink>
                 </template>
