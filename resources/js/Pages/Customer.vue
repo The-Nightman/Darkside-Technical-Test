@@ -56,9 +56,11 @@ const toggleEdit = () => {
                         </button>
                     </div>
                     <form class="flex flex-col" @submit.prevent="submitForm">
-                        <fieldset class="flex flex-col sm:flex-row mt-6 justify-between">
-                            <legend class="mb-6">Customer Information</legend>
-                            <div class="flex flex-col mt-8 gap-8">
+                        <fieldset class="flex flex-col sm:flex-row justify-between">
+                            <legend class="mb-6 text-lg font-semibold text-gray-800 dark:text-gray-200">Customer
+                                Information
+                            </legend>
+                            <div class="flex flex-col mt-8 gap-8 text-gray-800 dark:text-gray-200">
                                 <div class="flex w-full sm:w-96 justify-center">
                                     <img class="w-1/2 rounded-full" src="../../images/Profile_avatar_placeholder.png"
                                         alt="Customer Avatar image">
@@ -66,45 +68,47 @@ const toggleEdit = () => {
                                 <fieldset class="flex flex-col gap-3">
                                     <div class="relative z-0 w-full sm:w-96">
                                         <input
-                                            class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 focus:outline-none focus:ring-0 focus:border-blue-600 peer/name"
+                                            class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer/name"
                                             v-model="form.name" type="text" id="name" name="name" placeholder=""
                                             aria-description="Enter customer full name" required :readonly="!edit" />
                                         <label
-                                            class="peer-focus/name:font-medium absolute text-base text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus/name:left-0 peer-focus/name:text-blue-600 peer-placeholder-shown/name:scale-100 peer-placeholder-shown/name:translate-y-0 peer-focus/name:scale-75 peer-focus/name:-translate-y-6"
+                                            class="peer-focus/name:font-medium absolute text-sm text-gray-500 dark:text-gray-300 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus/name:left-0 peer-focus/name:text-blue-600 peer-focus/name:dark:text-blue-500 peer-placeholder-shown/name:scale-100 peer-placeholder-shown/name:translate-y-0 peer-focus/name:scale-75 peer-focus/name:-translate-y-6"
                                             for="name">Name</label>
                                     </div>
                                     <div class="relative z-0 w-full sm:w-96">
                                         <input
-                                            class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 focus:outline-none focus:ring-0 focus:border-blue-600 peer/email"
+                                            class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer/email"
                                             v-model="form.email" type="email" id="email" name="email" placeholder=""
                                             aria-description="Enter customer email" required :readonly="!edit" />
                                         <label
-                                            class="peer-focus/email:font-medium absolute text-base text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus/email:left-0 peer-focus/email:text-blue-600 peer-placeholder-shown/email:scale-100 peer-placeholder-shown/email:translate-y-0 peer-focus/email:scale-75 peer-focus/email:-translate-y-6"
+                                            class="peer-focus/email:font-medium absolute text-sm text-gray-500 dark:text-gray-300 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus/email:left-0 peer-focus/email:text-blue-600 peer-focus/email:dark:text-blue-500 peer-placeholder-shown/email:scale-100 peer-placeholder-shown/email:translate-y-0 peer-focus/email:scale-75 peer-focus/email:-translate-y-6"
                                             for="email">Email</label>
                                     </div>
                                     <div class="relative z-0 w-full sm:w-64">
                                         <input
-                                            class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 focus:outline-none focus:ring-0 focus:border-blue-600 peer/tel"
+                                            class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer/tel"
                                             v-model="form.phone" type="tel" id="telephone" name="telephone"
                                             placeholder="" aria-description="Enter customer phone number" required
                                             :readonly="!edit" />
                                         <label
-                                            class="peer-focus/tel:font-medium absolute text-base text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus/tel:left-0 peer-focus/tel:text-blue-600 peer-placeholder-shown/tel:scale-100 peer-placeholder-shown/tel:translate-y-0 peer-focus/tel:scale-75 peer-focus/tel:-translate-y-6"
+                                            class="peer-focus/tel:font-medium absolute text-sm text-gray-500 dark:text-gray-300 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus/tel:left-0 peer-focus/tel:text-blue-600 peer-focus/tel:dark:text-blue-500 peer-placeholder-shown/tel:scale-100 peer-placeholder-shown/tel:translate-y-0 peer-focus/tel:scale-75 peer-focus/tel:-translate-y-6"
                                             for="telephone">Telephone</label>
                                     </div>
                                     <div class="flex flex-row gap-4">
                                         <div>
-                                            <label class="block text-base text-gray-500" for="rating">Rating</label>
-                                            <select
-                                                class="block py-2.5 px-0 w-24 text-base text-gray-900 bg-transparent border-0 border-b-2 focus:outline-none focus:ring-0 focus:border-blue-600"
-                                                v-model="form.rating" id="rating" name="rating" placeholder=""
-                                                aria-description="Enter customer rating" required
-                                                :disabled="!edit || !form.rating_manual">
-                                                <option value="Bronze">Bronze</option>
-                                                <option value="Silver">Silver</option>
-                                                <option value="Gold">Gold</option>
-                                                <option value="Platinum">Platinum</option>
-                                            </select>
+                                            <label class="block text-base text-gray-900 dark:text-gray-300"
+                                                for="rating">Rating
+                                                <select
+                                                    class="block py-2.5 px-0 w-24 text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600"
+                                                    v-model="form.rating" id="rating" name="rating" placeholder=""
+                                                    aria-description="Enter customer rating" required
+                                                    :disabled="!edit || !form.rating_manual">
+                                                    <option class="dark:bg-gray-400" value="Bronze">Bronze</option>
+                                                    <option class="dark:bg-gray-400" value="Silver">Silver</option>
+                                                    <option class="dark:bg-gray-400" value="Gold">Gold</option>
+                                                    <option class="dark:bg-gray-400" value="Platinum">Platinum</option>
+                                                </select>
+                                            </label>
                                         </div>
                                         <div class="flex">
                                             <label class="self-center select-none">
@@ -116,80 +120,81 @@ const toggleEdit = () => {
                                 </fieldset>
                             </div>
                             <fieldset class="flex flex-col sm:w-1/2 mt-8 gap-8">
-                                <legend class="mb-6">Address</legend>
+                                <legend class="mb-6 text-lg font-semibold text-gray-800 dark:text-gray-200">Address
+                                </legend>
                                 <div class="flex flex-col w-full gap-3">
                                     <div class="relative z-0 w-40">
                                         <input
-                                            class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 focus:outline-none focus:ring-0 focus:border-blue-600 peer/housenum"
+                                            class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer/housenum"
                                             v-model="form.house_number" type="text" id="houseNumber" name="houseNumber"
                                             placeholder="" aria-description="Enter customer house or building number"
                                             required :readonly="!edit" />
                                         <label
-                                            class="peer-focus/housenum:font-medium absolute text-base text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus/housenum:left-0 peer-focus/housenum:text-blue-600 peer-placeholder-shown/housenum:scale-100 peer-placeholder-shown/housenum:translate-y-0 peer-focus/housenum:scale-75 peer-focus/housenum:-translate-y-6"
+                                            class="peer-focus/housenum:font-medium absolute text-sm text-gray-500 dark:text-gray-300 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus/housenum:left-0 peer-focus/housenum:text-blue-600 peer-focus/housenum:dark:text-blue-500 peer-placeholder-shown/housenum:scale-100 peer-placeholder-shown/housenum:translate-y-0 peer-focus/housenum:scale-75 peer-focus/housenum:-translate-y-6"
                                             for="houseNumber">House/Building No.</label>
                                     </div>
                                     <div class="relative z-0 w-full">
                                         <input
-                                            class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 focus:outline-none focus:ring-0 focus:border-blue-600 peer/address1"
+                                            class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer/address1"
                                             v-model="form.address_1" type="text" id="addressLine1" name="addressLine1"
                                             placeholder="" aria-description="Enter the first line of customer address"
                                             required :readonly="!edit" />
                                         <label
-                                            class="peer-focus/address1:font-medium absolute text-base text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus/address1:left-0 peer-focus/address1:text-blue-600 peer-placeholder-shown/address1:scale-100 peer-placeholder-shown/address1:translate-y-0 peer-focus/address1:scale-75 peer-focus/address1:-translate-y-6"
+                                            class="peer-focus/address1:font-medium absolute text-sm text-gray-500 dark:text-gray-300 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus/address1:left-0 peer-focus/address1:text-blue-600 peer-focus/address1:dark:text-blue-500 peer-placeholder-shown/address1:scale-100 peer-placeholder-shown/address1:translate-y-0 peer-focus/address1:scale-75 peer-focus/address1:-translate-y-6"
                                             for="addressLine1">Address Line 1</label>
                                     </div>
                                     <div class="relative z-0 w-full">
                                         <input
-                                            class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 focus:outline-none focus:ring-0 focus:border-blue-600 peer/address2"
+                                            class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer/address2"
                                             v-model="form.address_2" type="text" id="addressLine2" name="addressLine2"
                                             placeholder=""
                                             aria-description="Enter the second line of customer address (optional)"
                                             :readonly="!edit" />
                                         <label
-                                            class="peer-focus/address2:font-medium absolute text-base text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus/address2:left-0 peer-focus/address2:text-blue-600 peer-placeholder-shown/address2:scale-100 peer-placeholder-shown/address2:translate-y-0 peer-focus/address2:scale-75 peer-focus/address2:-translate-y-6"
+                                            class="peer-focus/address2:font-medium absolute text-sm text-gray-500 dark:text-gray-300 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus/address2:left-0 peer-focus/address2:text-blue-600 peer-focus/address2:dark:text-blue-500 peer-placeholder-shown/address2:scale-100 peer-placeholder-shown/address2:translate-y-0 peer-focus/address2:scale-75 peer-focus/address2:-translate-y-6"
                                             for="addressLine2">Address Line 2 (Optional)</label>
                                     </div>
                                     <div class="relative z-0 w-full">
                                         <input
-                                            class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 focus:outline-none focus:ring-0 focus:border-blue-600 peer/postcode"
+                                            class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer/postcode"
                                             v-model="form.postcode" type="text" id="postcode" name="postcode"
                                             placeholder="" aria-description="Enter customer postal or zip code" required
                                             :readonly="!edit" />
                                         <label
-                                            class="peer-focus/postcode:font-medium absolute text-base text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus/postcode:left-0 peer-focus/postcode:text-blue-600 peer-placeholder-shown/postcode:scale-100 peer-placeholder-shown/postcode:translate-y-0 peer-focus/postcode:scale-75 peer-focus/postcode:-translate-y-6"
+                                            class="peer-focus/postcode:font-medium absolute text-sm text-gray-500 dark:text-gray-300 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus/postcode:left-0 peer-focus/postcode:text-blue-600 peer-focus/postcode:dark:text-blue-500 peer-placeholder-shown/postcode:scale-100 peer-placeholder-shown/postcode:translate-y-0 peer-focus/postcode:scale-75 peer-focus/postcode:-translate-y-6"
                                             for="postcode">Postcode</label>
                                     </div>
                                 </div>
                                 <div class="flex flex-col w-full gap-3">
                                     <div class="relative z-0 w-full">
                                         <input
-                                            class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 focus:outline-none focus:ring-0 focus:border-blue-600 peer/town"
+                                            class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer/town"
                                             v-model="form.city" type="text" id="town" name="town" placeholder=""
                                             aria-description="Enter customer Town or City of residence" required
                                             :readonly="!edit" />
                                         <label
-                                            class="peer-focus/town:font-medium absolute text-base text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus/town:left-0 peer-focus/town:text-blue-600 peer-placeholder-shown/town:scale-100 peer-placeholder-shown/town:translate-y-0 peer-focus/town:scale-75 peer-focus/town:-translate-y-6"
+                                            class="peer-focus/town:font-medium absolute text-sm text-gray-500 dark:text-gray-300 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus/town:left-0 peer-focus/town:text-blue-600 peer-focus/town:dark:text-blue-500 peer-placeholder-shown/town:scale-100 peer-placeholder-shown/town:translate-y-0 peer-focus/town:scale-75 peer-focus/town:-translate-y-6"
                                             for="town">Town/City</label>
                                     </div>
                                     <div class="relative z-0 w-full">
                                         <input
-                                            class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 focus:outline-none focus:ring-0 focus:border-blue-600 peer/countyState"
+                                            class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer/county"
                                             v-model="form.state" type="text" id="countyState" name="countyState"
                                             placeholder=""
                                             aria-description="Enter customer County or State of residence" required
                                             :readonly="!edit" />
                                         <label
-                                            class="peer-focus/countyState:font-medium absolute text-base text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus/countyState:left-0 peer-focus/countyState:text-blue-600 peer-placeholder-shown/countyState:scale-100 peer-placeholder-shown/countyState:translate-y-0 peer-focus/countyState:scale-75 peer-focus/countyState:-translate-y-6"
+                                            class="peer-focus/county:font-medium absolute text-sm text-gray-500 dark:text-gray-300 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus/county:left-0 peer-focus/county:text-blue-600 peer-focus/county:dark:text-blue-500 peer-placeholder-shown/county:scale-100 peer-placeholder-shown/county:translate-y-0 peer-focus/county:scale-75 peer-focus/county:-translate-y-6"
                                             for="countyState">County/State</label>
                                     </div>
                                     <div class="relative z-0 w-full">
                                         <input
-                                            class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 focus:outline-none focus:ring-0 focus:border-blue-600 peer/country"
+                                            class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer/country"
                                             v-model="form.country" type="text" id="country" name="country"
                                             placeholder="" aria-description="Enter customer Country of residence"
                                             required :readonly="!edit" />
                                         <label
-                                            class="peer-focus/country:font-medium absolute text-base text-gray-500 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus/country:left-0 peer-focus/country:text-blue-600 peer-placeholder-shown/country:scale-100 peer-placeholder-shown/country:translate-y-0 peer-focus/country:scale-75 peer-focus/country:-translate-y-6"
+                                            class="peer-focus/country:font-medium absolute text-sm text-gray-500 dark:text-gray-300 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus/country:left-0 peer-focus/country:text-blue-600 peer-focus/country:dark:text-blue-500 peer-placeholder-shown/country:scale-100 peer-placeholder-shown/country:translate-y-0 peer-focus/country:scale-75 peer-focus/country:-translate-y-6"
                                             for="country">Country</label>
                                     </div>
                                 </div>
