@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CustomerDataUpdateRequest;
 use App\Models\CustomerData;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -29,5 +30,22 @@ class CustomerController extends Controller
         return Inertia::render('Customer', [
             'customer' => $customer,
         ]);
+    }
+
+    public function update(CustomerDataUpdateRequest $request)
+    {
+        $request->validate([
+            'id' => [
+                'required',
+                'integer',
+                'exists:customer_data,id'
+            ]
+        ]);
+
+        $customer = CustomerData::findOrFail($request->id);
+
+        $customer->update($request->validated());
+
+        return redirect()->route('customer.show', ['id' => $customer->id]);
     }
 }
