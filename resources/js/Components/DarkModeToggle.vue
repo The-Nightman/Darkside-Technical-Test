@@ -30,7 +30,7 @@ const toggleTheme = () => {
 
 <template>
     <button type="button" @click="toggleTheme" aria-label="Toggle Dark Mode"
-        class="h-fit p-0.5 rounded-full text-white border border-gray-300 dark:text-gray-400 hover:bg-gray-400 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-700">
+        class="h-fit p-0.5 rounded-full text-white border border-gray-300 dark:text-gray-400 hover:bg-gray-400 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:focus:ring-gray-100">
         <svg v-if="isDark" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
             <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z">
             </path>

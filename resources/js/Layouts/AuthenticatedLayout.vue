@@ -34,7 +34,7 @@ const showingNavigationDropdown = ref(false);
                         </div>
 
                         <!-- Dark mode toggle, bg is set to improve visibility on white, could be MUCH better -->
-                        <DarkModeToggle class="ml-auto mr-2 self-center bg-gray-300" />
+                        <DarkModeToggle class="ml-auto mr-2 self-center bg-gray-300 dark:bg-gray-900" />
 
                         <div class="hidden sm:flex sm:items-center sm:ms-6">
                             <!-- Settings Dropdown -->
