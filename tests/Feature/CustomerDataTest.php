@@ -29,4 +29,24 @@ class CustomerDataTest extends TestCase
                 ->where('customer', $customer)
         );
     }
+
+    public function test_customer_data_can_be_updated()
+    {
+        $user = User::factory()->create();
+        $customer = CustomerData::factory()->create();
+
+        $updatedCustomer = array_merge($customer->toArray(), ['name' => 'Jane Doe']);
+
+        $response = $this
+            ->actingAs($user)
+            ->put(route('customer.update', ['id' => $customer->id]), $updatedCustomer);
+
+        $response->assertStatus(302);
+        $response->assertRedirect(route('customer.show', ['id' => $customer->id]));
+
+        $this->assertDatabaseHas('customer_data', [
+            'id' => $customer['id'],
+            'name' => $updatedCustomer['name']
+        ]);
+    }
 }
