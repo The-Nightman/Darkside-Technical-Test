@@ -34,6 +34,17 @@ class DashboardTest extends TestCase
         $user = User::factory()->create();
         $customers = CustomerData::factory(10)->create();
 
+        // map the customers to the expected columns used by dashboard
+        $expectedCustomers = $customers->map(function ($customer) {
+            return $customer->only([
+                'id',
+                'name',
+                'email',
+                'phone',
+                'rating',
+            ]);
+        })->toArray();
+
         // spoof an authenticated user
         $response = $this
             ->actingAs($user)
@@ -46,7 +57,7 @@ class DashboardTest extends TestCase
             fn($page) => $page
                 ->component('Dashboard')
                 ->has('customers', 10)
-                ->where('customers', $customers->toArray())
+                ->where('customers', $expectedCustomers)
         );
     }
 }
