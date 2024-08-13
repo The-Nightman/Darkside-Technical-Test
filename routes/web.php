@@ -16,7 +16,14 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    $customers = CustomerData::all();
+    // Fetch only customer details needed for list in frontend
+    $customers = CustomerData::select([
+        'id',
+        'name',
+        'email',
+        'phone',
+        'rating',
+    ])->get();
     return Inertia::render('Dashboard', [
         'customers' => $customers, // Pass customer details to the view
     ]);
