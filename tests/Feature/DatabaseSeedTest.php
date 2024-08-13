@@ -13,7 +13,7 @@ class DatabaseSeedTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * A basic feature test example.
+     * Test that the customer_data table is seeded successfully with the expected data.
      */
     public function test_customer_data_is_seeded_to_database(): void
     {
