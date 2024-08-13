@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import CustomerDashboardCard from '@/Components/CustomerDashboardCard.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
+import { CustomerCardData } from '@/types/customerCardData';
 import { Head } from '@inertiajs/vue3';
 
 defineProps<{
-    customers: Array<any>;
+    customers: Array<CustomerCardData>;
 }>();
 
 </script>
