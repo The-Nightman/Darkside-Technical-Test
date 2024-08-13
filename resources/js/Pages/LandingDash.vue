@@ -19,7 +19,7 @@ defineProps<{
         <div class="min-h-screen flex flex-col px-2 items-center justify-center">
             <div class="w-full max-w-2xl lg:max-w-7xl">
                 <header class="flex items-center justify-center">
-                    <DarkModeToggle />
+                    <DarkModeToggle class="absolute top-2 right-2" />
                     <div
                         class="flex flex-col w-full p-8 rounded-2xl items-center bg-white dark:bg-gray-700 shadow-2xl select-none">
                         <img src="../../images/dslogo.png" alt="Darkside Developments Company Logo" draggable="false">
