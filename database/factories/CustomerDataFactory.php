@@ -19,7 +19,7 @@ class CustomerDataFactory extends Factory
         return [
             'name' => fake()->name(),
             'email' => fake()->unique()->safeEmail(),
-            'phone' => fake()->unique()->phoneNumber(),
+            'phone' => fake()->unique()->e164PhoneNumber(),
             'house_number' => fake()->buildingNumber(),
             'address_1' => fake()->streetName(),
             'address_2' => fake()->optional()->secondaryAddress(),
