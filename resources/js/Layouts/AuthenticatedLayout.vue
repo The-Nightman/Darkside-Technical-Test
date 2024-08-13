@@ -20,7 +20,7 @@ const showingNavigationDropdown = ref(false);
                         <div class="flex">
                             <!-- Logo -->
                             <div class="shrink-0 flex items-center">
-                                <Link :href="route('dashboard')" aria-hidden="true">
+                                <Link :href="route('dashboard')" aria-hidden="true" tabindex="-1">
                                 <img class="h-9 dark:invert dark:grayscale" src="../../images/dsshort.png" aria-hidden="true">
                                 </Link>
                             </div>
