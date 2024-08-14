@@ -29,6 +29,7 @@ class CustomerDataFactory extends Factory
             'country' => fake()->country(),
             'rating' => fake()->randomElement(['Bronze', 'Silver', 'Gold', 'Platinum']),
             'rating_manual' => false,
+            'avatar' => 'images/Profile_avatar_placeholder.png',
         ];
     }
 }
