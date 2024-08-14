@@ -2,8 +2,30 @@
 import { CustomerCardData } from '@/types/customerCardData';
 import Dropdown from './Dropdown.vue';
 import DropdownLink from './DropdownLink.vue';
+import { router } from '@inertiajs/vue3';
 
 defineProps<{ customer: CustomerCardData }>();
+
+const emit = defineEmits(['customerDeleted']);
+
+const handleDelete = (id: number) => {
+    if (confirm('Are you sure you want to delete this customer?')) {
+        router.delete(route('customer.destroy', { id: id }), {
+            preserveScroll: true,
+            // emits currently not working
+            onSuccess: () => {
+                emit('customerDeleted', { message: 'Customer deleted successfully', success: true });
+            },
+            onError: (error) => {
+                for (const key in error) {
+                    if (error.hasOwnProperty(key)) {
+                        emit('customerDeleted', { message: error[key], success: false });
+                    }
+                }
+            },
+        })
+    }
+};
 
 </script>
 
@@ -44,8 +66,9 @@ defineProps<{ customer: CustomerCardData }>();
                 <!-- Dropdown Options -->
                 <template #content>
                     <DropdownLink :href="route('customer.show', { id: customer.id })" as="button"> View </DropdownLink>
-                    <DropdownLink class="bg-red-600/50 hover:bg-red-600 dark:hover:bg-red-600"
-                        :href="route('dashboard')" as="button"> Delete </DropdownLink>
+                    <button
+                        class="block w-full px-4 py-2 text-start text-sm leading-5 text-gray-700 dark:text-gray-300 bg-red-600/50 hover:bg-red-600 dark:hover:bg-red-600 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-700 transition duration-150 ease-in-out"
+                        @click="() => handleDelete(customer.id)"> Delete </button>
                 </template>
             </Dropdown>
         </div>
