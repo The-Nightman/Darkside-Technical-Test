@@ -24,7 +24,7 @@ class CustomerController extends Controller
             'city' => '',
             'state' => '',
             'country' => '',
-            'rating' => '',
+            'rating' => 'Bronze',
             'rating_manual' => false,
         ]);
 
