@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\CustomerData;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Arr;
 use Tests\TestCase;
 
 class CustomerDataTest extends TestCase
@@ -79,5 +80,25 @@ class CustomerDataTest extends TestCase
                     'rating_manual' => false,
                 ])
         );
+    }
+
+    public function test_create_new_customer_data()
+    {
+        $user = User::factory()->create();
+        $customer = CustomerData::factory()->make();
+
+        $customerData = $customer->toArray();
+        unset($customerData['id']);
+
+        $response = $this
+            ->actingAs($user)
+            ->post(route('customer.store'), $customerData);
+
+        $this->assertDatabaseHas('customer_data', Arr::except($customerData, ['id']));
+
+        $savedCustomer = CustomerData::where($customerData)->first();
+
+        $response->assertStatus(302);
+        $response->assertRedirect(route('customer.show', ['id' => $savedCustomer->id]));
     }
 }
