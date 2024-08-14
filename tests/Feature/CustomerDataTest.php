@@ -49,4 +49,35 @@ class CustomerDataTest extends TestCase
             'name' => $updatedCustomer['name']
         ]);
     }
+
+    public function test_new_customer_data_view_with_placeholder_values()
+    {
+        $user = User::factory()->create();
+
+        $response = $this
+            ->actingAs($user)
+            ->get(route('customer.create'));
+
+        $response->assertOk();
+
+        $response->assertInertia(
+            fn($page) => $page
+                ->component('Customer')
+                ->has('customer')
+                ->where('customer', [
+                    'name' => '',
+                    'email' => '',
+                    'phone' => '',
+                    'house_number' => '',
+                    'address_1' => '',
+                    'address_2' => null,
+                    'postcode' => '',
+                    'city' => '',
+                    'state' => '',
+                    'country' => '',
+                    'rating' => '',
+                    'rating_manual' => false,
+                ])
+        );
+    }
 }
