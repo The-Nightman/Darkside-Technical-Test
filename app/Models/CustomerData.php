@@ -29,6 +29,7 @@ class CustomerData extends Model
         'country',
         'rating',
         'rating_manual',
+        'avatar',
     ];
 
     /**
