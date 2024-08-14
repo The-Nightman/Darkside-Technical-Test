@@ -22,20 +22,35 @@ const toast = reactive<{ show: boolean; message: string; success: boolean; }>({
  * Submit the form data to the server.
  */
 const submitForm = () => {
-    router.put(route('customer.update', { id: props.customer.id }), form, {
-        onSuccess: () => {
-            showToast("Details saved successfully", true);
-            edit.value = false;
-        },
-        onError: (error) => {
-            for (const key in error) {
-                if (error.hasOwnProperty(key)) {
-                    showToast(error[key], false);
+    if (form.id === null) {
+        router.put(route('customer.update', { id: props.customer.id }), form, {
+            onSuccess: () => {
+                showToast("Details saved successfully", true);
+                edit.value = false;
+            },
+            onError: (error) => {
+                for (const key in error) {
+                    if (error.hasOwnProperty(key)) {
+                        showToast(error[key], false);
+                    }
                 }
-            }
-
-        },
-    });
+            },
+        });
+    } else {
+        router.post(route('customer.store'), form, {
+            onSuccess: () => {
+                showToast("Customer added successfully", true);
+                edit.value = false;
+            },
+            onError: (error) => {
+                for (const key in error) {
+                    if (error.hasOwnProperty(key)) {
+                        showToast(error[key], false);
+                    }
+                }
+            },
+        });
+    }
 };
 
 /**
