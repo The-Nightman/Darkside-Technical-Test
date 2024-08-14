@@ -48,7 +48,7 @@ class CustomerController extends Controller
 
         $newCustomer = CustomerData::create($customer);
 
-        Mail::to($request->user())->send(new CustomerCreated($customer));
+        Mail::to($request->user())->send(new CustomerCreated($newCustomer));
 
         return redirect()->route('customer.show', ['id' => $newCustomer->id]);
     }
