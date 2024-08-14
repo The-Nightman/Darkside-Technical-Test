@@ -39,9 +39,8 @@ class CustomerController extends Controller
 
     public function show(Request $request)
     {
-        // cast request id to key-value pair array
-        // without this validation will fail and customer cannot be retrieved even without validation
-        // i do not know why but it will just redirect back to dashboard
+        // cast route param from request to key-value pair array
+        // otherwise id will be null and fail validation
         $request->merge(['id' => $request->route('id')]);
 
         // Validate request
@@ -75,5 +74,24 @@ class CustomerController extends Controller
         $customer->update($request->validated());
 
         return redirect()->route('customer.show', ['id' => $customer->id]);
+    }
+
+    public function destroy(Request $request)
+    {
+        // see show method above
+        $request->merge(['id' => $request->route('id')]);
+
+        $request->validate([
+            'id' => [
+                'required',
+                'integer',
+                'exists:customer_data,id'
+            ]
+        ]);
+
+        $customer = CustomerData::findOrFail($request->id);
+        $customer->delete();
+
+        return redirect()->route('dashboard');
     }
 }
