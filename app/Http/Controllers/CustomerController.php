@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CustomerDataCreateRequest;
 use App\Http\Requests\CustomerDataUpdateRequest;
 use App\Models\CustomerData;
 use Illuminate\Http\Request;
@@ -28,6 +29,12 @@ class CustomerController extends Controller
         ]);
 
         return Inertia::render('Customer', ['customer' => $newCustomer]);
+    }
+
+    public function store(CustomerDataCreateRequest $request)
+    {
+        $customer = CustomerData::create($request->validated());
+        return redirect()->route('customer.show', ['id' => $customer->id]);
     }
 
     public function show(Request $request)
