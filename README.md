@@ -1,3 +1,5 @@
+![darkside developments logo](resources/images/dslogo.png)
+
 # DarksideTechTest
 Technical test for Darkside Developments, task specifications include a basic html form with backend services
 
@@ -35,6 +37,18 @@ DB_USERNAME=sail
 DB_PASSWORD=password
 ```
 
+Mailhog is also required for local testing of mailing services and email verification, an example connection is provided in the .env.example file
+```
+MAIL_MAILER=smtp
+MAIL_HOST=mailhog
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS="hello@example.com"
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
 ## Running the application
 
 1. in order to run the application first clone the repository to a local repo preferably on a linux system
@@ -70,6 +84,8 @@ seed data:
 ```
 ./vendor/bin/sail stop
 ```
+
+7. test the mailhog service by opening the address `http://localhost:8025/` in your browser, this should open the mailhog web interface. By default the docker-compose yaml will map mailhog to the ports 1025 and 8025 on localhost 
 
 ### Running tests
 

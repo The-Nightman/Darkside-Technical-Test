@@ -22,7 +22,7 @@ const toast = reactive<{ show: boolean; message: string; success: boolean; }>({
  * Submit the form data to the server.
  */
 const submitForm = () => {
-    if (form.id === null) {
+    if (!form.id) {
         router.post(route('customer.store'), form, {
             onSuccess: () => {
                 showToast("Customer added successfully", true);

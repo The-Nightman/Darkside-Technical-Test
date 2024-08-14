@@ -4,8 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CustomerDataCreateRequest;
 use App\Http\Requests\CustomerDataUpdateRequest;
+use App\Mail\CustomerCreated;
+use App\Mail\CustomerDeleted;
+use App\Mail\CustomerUpdated;
 use App\Models\CustomerData;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Inertia\Inertia;
 
 class CustomerController extends Controller
@@ -34,6 +38,9 @@ class CustomerController extends Controller
     public function store(CustomerDataCreateRequest $request)
     {
         $customer = CustomerData::create($request->validated());
+
+        Mail::to($request->user())->send(new CustomerCreated($customer));
+
         return redirect()->route('customer.show', ['id' => $customer->id]);
     }
 
@@ -73,6 +80,8 @@ class CustomerController extends Controller
 
         $customer->update($request->validated());
 
+        Mail::to($request->user())->send(new CustomerUpdated($customer));
+
         return redirect()->route('customer.show', ['id' => $customer->id]);
     }
 
@@ -91,6 +100,8 @@ class CustomerController extends Controller
 
         $customer = CustomerData::findOrFail($request->id);
         $customer->delete();
+
+        Mail::to($request->user())->send(new CustomerDeleted($customer));
 
         return redirect()->route('dashboard');
     }
