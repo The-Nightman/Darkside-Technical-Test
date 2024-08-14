@@ -76,7 +76,7 @@ class CustomerDataTest extends TestCase
                     'city' => '',
                     'state' => '',
                     'country' => '',
-                    'rating' => '',
+                    'rating' => 'Bronze',
                     'rating_manual' => false,
                 ])
         );
@@ -100,5 +100,22 @@ class CustomerDataTest extends TestCase
 
         $response->assertStatus(302);
         $response->assertRedirect(route('customer.show', ['id' => $savedCustomer->id]));
+    }
+
+    public function test_delete_customer_data_record()
+    {
+        $user = User::factory()->create();
+        $customer = CustomerData::factory()->create();
+
+        $this->assertDatabaseHas('customer_data', $customer->toArray());
+
+        $response = $this
+            ->actingAs($user)
+            ->delete(route('customer.destroy', ['id' => $customer->id]));
+
+        $this->assertDatabaseMissing('customer_data', $customer->toArray());
+
+        $response->assertStatus(302);
+        $response->assertRedirect(route('dashboard'));
     }
 }
