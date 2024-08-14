@@ -32,8 +32,8 @@ const handleDelete = (id: number) => {
 <template>
     <div
         class="p-1 grid grid-cols-[min-content_auto_20%_min-content] md:grid-cols-[min-content_auto_25%_15%_min-content] lg:grid-cols-[min-content_25%_15%_auto_15%_min-content] gap-2 sm:gap-4 dark:text-gray-300">
-        <div class="flex items-center w-max"><img class="w-10 rounded-full"
-                src="../../images/Profile_avatar_placeholder.png" alt="customer profile image">
+        <div class="flex items-center w-max">
+            <img class="w-10 aspect-square rounded-full" :src="customer.avatar" alt="customer profile image" />
         </div>
         <div class="flex items-center">{{ customer.name }}</div>
         <address class="hidden md:flex items-center">{{ customer.phone }}</address>
