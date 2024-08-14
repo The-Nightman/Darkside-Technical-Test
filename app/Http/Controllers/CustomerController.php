@@ -9,6 +9,27 @@ use Inertia\Inertia;
 
 class CustomerController extends Controller
 {
+    public function create()
+    {
+        // Create a new customer with empty values
+        $newCustomer = new CustomerData([
+            'name' => '',
+            'email' => '',
+            'phone' => '',
+            'house_number' => '',
+            'address_1' => '',
+            'address_2' => null,
+            'postcode' => '',
+            'city' => '',
+            'state' => '',
+            'country' => '',
+            'rating' => '',
+            'rating_manual' => false,
+        ]);
+
+        return Inertia::render('Customer', ['customer' => $newCustomer]);
+    }
+
     public function show(Request $request)
     {
         // cast request id to key-value pair array
