@@ -10,6 +10,7 @@ use App\Mail\CustomerUpdated;
 use App\Models\CustomerData;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class CustomerController extends Controller
@@ -30,6 +31,7 @@ class CustomerController extends Controller
             'country' => '',
             'rating' => 'Bronze',
             'rating_manual' => false,
+            'avatar' => Storage::url('images/Profile_avatar_placeholder.png'),
         ]);
 
         return Inertia::render('Customer', ['customer' => $newCustomer]);
@@ -37,11 +39,18 @@ class CustomerController extends Controller
 
     public function store(CustomerDataCreateRequest $request)
     {
-        $customer = CustomerData::create($request->validated());
+        $customer = $request->validated();
+
+        $customer['avatar'] = $request->hasFile('avatar')
+            ? Storage::disk(name: 'public')->put('images', $request->file('avatar'))
+            : 'images/Profile_avatar_placeholder.png';
+
+
+        $newCustomer = CustomerData::create($customer);
 
         Mail::to($request->user())->send(new CustomerCreated($customer));
 
-        return redirect()->route('customer.show', ['id' => $customer->id]);
+        return redirect()->route('customer.show', ['id' => $newCustomer->id]);
     }
 
     public function show(Request $request)
@@ -61,6 +70,9 @@ class CustomerController extends Controller
 
         // Fetch customer details by id
         $customer = CustomerData::findOrFail($request->id);
+
+        $customer->avatar = Storage::url($customer->avatar);
+
         return Inertia::render('Customer', [
             'customer' => $customer,
         ]);
@@ -73,12 +85,18 @@ class CustomerController extends Controller
                 'required',
                 'integer',
                 'exists:customer_data,id'
-            ]
+            ],
         ]);
+
+        $validatedCustomer = $request->validated();
 
         $customer = CustomerData::findOrFail($request->id);
 
-        $customer->update($request->validated());
+        $validatedCustomer['avatar'] = $request->hasFile('avatar')
+            ? Storage::disk('public')->put('images', $request->file('avatar'))
+            : $customer->avatar;
+
+        $customer->update($validatedCustomer);
 
         Mail::to($request->user())->send(new CustomerUpdated($customer));
 
