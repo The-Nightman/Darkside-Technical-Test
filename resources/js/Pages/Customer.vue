@@ -78,10 +78,12 @@ const showToast = (message: string, success: boolean) => {
 
 <template>
 
-    <Head :title="customer.name" />
+    <Head :title="customer.name || 'New Customer'" />
     <AuthenticatedLayout>
         <template #header>
-            <h1 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">{{ customer.name }}</h1>
+            <h1 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
+                {{ customer.name || 'New Customer' }}
+            </h1>
         </template>
         <div class="relative">
             <Toast v-if="toast.show" :message="toast.message" :success="toast.success" />
