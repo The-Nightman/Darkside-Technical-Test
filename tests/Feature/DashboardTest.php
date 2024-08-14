@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\CustomerData;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class DashboardTest extends TestCase
@@ -36,13 +37,16 @@ class DashboardTest extends TestCase
 
         // map the customers to the expected columns used by dashboard
         $expectedCustomers = $customers->map(function ($customer) {
-            return $customer->only([
+            $data = $customer->only([
                 'id',
                 'name',
                 'email',
                 'phone',
                 'rating',
+                'avatar',
             ]);
+            $data['avatar'] = Storage::url($data['avatar']);
+            return $data;
         })->toArray();
 
         // spoof an authenticated user
