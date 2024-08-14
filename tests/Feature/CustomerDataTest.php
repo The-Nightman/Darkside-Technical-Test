@@ -6,6 +6,7 @@ use App\Models\CustomerData;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class CustomerDataTest extends TestCase
@@ -16,6 +17,9 @@ class CustomerDataTest extends TestCase
     {
         $user = User::factory()->create();
         $customer = CustomerData::factory()->create();
+
+        // required as factory cannot generate storage url without breaking tests
+        $customer->avatar = Storage::url($customer->avatar);
 
         $response = $this
             ->actingAs($user)
@@ -36,7 +40,8 @@ class CustomerDataTest extends TestCase
         $user = User::factory()->create();
         $customer = CustomerData::factory()->create();
 
-        $updatedCustomer = array_merge($customer->toArray(), ['name' => 'Jane Doe']);
+        // set ['avatar' => ''] to avoid breaking tests, functionally simulating an update without changing avatar
+        $updatedCustomer = array_merge($customer->toArray(), ['name' => 'Jane Doe'], ['avatar' => '']);
 
         $response = $this
             ->actingAs($user)
@@ -78,6 +83,7 @@ class CustomerDataTest extends TestCase
                     'country' => '',
                     'rating' => 'Bronze',
                     'rating_manual' => false,
+                    'avatar' => Storage::url('images/Profile_avatar_placeholder.png'),
                 ])
         );
     }
@@ -88,11 +94,18 @@ class CustomerDataTest extends TestCase
         $customer = CustomerData::factory()->make();
 
         $customerData = $customer->toArray();
+        // required as factory cannot generate storage url without breaking tests
+        // this functionally replicates creating a new customer without adding avatar in frontend
+        $customerData['avatar'] = '';
+
         unset($customerData['id']);
 
         $response = $this
             ->actingAs($user)
             ->post(route('customer.store'), $customerData);
+
+        // see above comment for why this is necessary
+        $customerData['avatar'] = 'images/Profile_avatar_placeholder.png';
 
         $this->assertDatabaseHas('customer_data', Arr::except($customerData, ['id']));
 

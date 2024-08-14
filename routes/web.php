@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Models\CustomerData;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 Route::get('/', function () {
@@ -24,7 +25,14 @@ Route::get('/dashboard', function () {
         'email',
         'phone',
         'rating',
+        'avatar',
     ])->get();
+
+    $customers->transform(function ($customer) {
+        $customer->avatar = Storage::url($customer->avatar);
+        return $customer;
+    });
+
     return Inertia::render('Dashboard', [
         'customers' => $customers, // Pass customer details to the view
     ]);

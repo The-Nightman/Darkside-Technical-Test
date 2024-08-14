@@ -27,6 +27,7 @@ class CustomerDataUpdateRequest extends FormRequest
             'country' => ['required', 'string', 'max:255'],
             'rating' => ['required', 'string', 'in:Bronze,Silver,Gold,Platinum'],
             'rating_manual' => ['required', 'boolean'],
+            'avatar' => ['nullable', 'image', 'mimes:jpeg,png,jpg,gif', 'max:2048'],
         ];
     }
 }

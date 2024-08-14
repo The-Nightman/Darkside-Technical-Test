@@ -66,19 +66,19 @@ if this fails or appears to freeze then you can attempt to cancel and then run t
 ./vendor/bin/sail build
 ```
 
-4. once the application is running in a docker container you need to run a migration to build the database and then seed the database with test data by running the following commands in the terminal inside the application folder
-
-build tables:
+4. once the application is running in a docker container you will need to run the following commands to guarantee the application is functional by running a migration to build the database, seeding the database with test data and creating a storage link by running the following commands in the terminal inside the application folder
 ```
 ./vendor/bin/sail artisan migrate
-```
-seed data:
-```
 ./vendor/bin/sail artisan db:seed
+./vendor/bin/sail artisan storage:link
 ```
-
 
 5. you can now access the application at the localhost address shown in the terminal
+
+this may not be needed but if the application appears to be broken and missing pages or elements you can rebuild the frontend by running the following command
+```
+./vendor/bin/sail npm run build
+```
 
 6. to stop the application either ctrl+c or if the container is running in the background then run the following command
 ```

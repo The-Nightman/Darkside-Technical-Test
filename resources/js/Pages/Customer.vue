@@ -12,6 +12,8 @@ const form = reactive<CustomerData>({ ...props.customer });
 
 const edit = ref<boolean>(false);
 
+const avatarPreview = ref<string>(props.customer.avatar);
+
 const toast = reactive<{ show: boolean; message: string; success: boolean; }>({
     show: false,
     message: "",
@@ -22,8 +24,30 @@ const toast = reactive<{ show: boolean; message: string; success: boolean; }>({
  * Submit the form data to the server.
  */
 const submitForm = () => {
+    const formData = new FormData();
+    if (form.id) {
+        formData.append('id', form.id.toString());
+    }
+    formData.append('name', form.name);
+    formData.append('email', form.email);
+    formData.append('phone', form.phone);
+    formData.append('house_number', form.house_number);
+    formData.append('address_1', form.address_1);
+    formData.append('address_2', form.address_2);
+    formData.append('postcode', form.postcode);
+    formData.append('city', form.city);
+    formData.append('state', form.state);
+    formData.append('country', form.country);
+    formData.append('rating', form.rating);
+    formData.append('rating_manual', form.rating_manual ? '1' : '0');
+    if (form.avatar === props.customer.avatar) {
+        formData.append('avatar', '');
+    } else {
+        formData.append('avatar', form.avatar);
+    }
+
     if (!form.id) {
-        router.post(route('customer.store'), form, {
+        router.post(route('customer.store'), formData, {
             onSuccess: () => {
                 showToast("Customer added successfully", true);
                 edit.value = false;
@@ -37,7 +61,8 @@ const submitForm = () => {
             },
         });
     } else {
-        router.put(route('customer.update', { id: props.customer.id }), form, {
+        formData.append('_method', 'PUT');
+        router.post(route('customer.update', { id: props.customer.id }), formData, {
             onSuccess: () => {
                 showToast("Details saved successfully", true);
                 edit.value = false;
@@ -71,6 +96,8 @@ const toggleEdit = () => {
         form.country = props.customer.country;
         form.rating = props.customer.rating;
         form.rating_manual = props.customer.rating_manual;
+        form.avatar = props.customer.avatar;
+        avatarPreview.value = props.customer.avatar;
     }
 };
 
@@ -88,6 +115,18 @@ const showToast = (message: string, success: boolean) => {
         toast.show = false;
     }, 4000);
 };
+
+const handleFile = (e: Event) => {
+    const file = (e.target as HTMLInputElement).files?.[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            avatarPreview.value = e.target?.result as string;
+        };
+        reader.readAsDataURL(file);
+    }
+    form.avatar = file;
+}
 
 </script>
 
@@ -120,9 +159,9 @@ const showToast = (message: string, success: boolean) => {
                                     Information
                                 </legend>
                                 <div class="flex flex-col mt-8 gap-8 text-gray-800 dark:text-gray-200">
-                                    <div class="flex w-full sm:w-96 justify-center">
-                                        <img class="w-1/2 rounded-full"
-                                            src="../../images/Profile_avatar_placeholder.png"
+                                    <div class="flex flex-col w-full sm:w-96 items-center justify-center">
+                                        <input type="file" @input="handleFile" v-if="edit">
+                                        <img class="w-1/2 aspect-square h-auto rounded-full" :src="avatarPreview"
                                             alt="Customer Avatar image">
                                     </div>
                                     <fieldset class="flex flex-col gap-3">
