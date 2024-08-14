@@ -12,4 +12,5 @@ export interface CustomerData {
   country: string;
   rating: string;
   rating_manual: boolean;
+  avatar: any;
 }
