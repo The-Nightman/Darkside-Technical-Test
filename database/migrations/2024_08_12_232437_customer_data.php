@@ -25,6 +25,7 @@ return new class extends Migration
             $table->string('country');
             $table->string('rating')->default('Bronze');
             $table->boolean('rating_manual')->default(false);
+            $table->string('avatar')->default('images/Profile_avatar_placeholder.png');
             $table->timestamps();
         });
     }
