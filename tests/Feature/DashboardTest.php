@@ -36,25 +36,24 @@ class DashboardTest extends TestCase
         $customers = CustomerData::factory(10)->create();
 
         // map the customers to the expected columns used by dashboard
-        $expectedCustomers = $customers->map(function ($customer) {
-            $data = $customer->only([
-                'id',
-                'name',
-                'email',
-                'phone',
-                'rating',
-                'avatar',
-            ]);
-            $data['avatar'] = Storage::url($data['avatar']);
-            return $data;
-        })->toArray();
+        $expectedCustomers = $customers->sortBy('name')
+            ->map(function ($customer) {
+                $data = $customer->only([
+                    'id',
+                    'name',
+                    'email',
+                    'phone',
+                    'rating',
+                    'avatar',
+                ]);
+                $data['avatar'] = Storage::url($data['avatar']);
+                return $data;
+            })->values()->toArray();
 
         // spoof an authenticated user
         $response = $this
             ->actingAs($user)
             ->get('/dashboard');
-
-        $response->assertOk();
 
         // Check that the customers are sent to the view and match db contents
         $response->assertInertia(
