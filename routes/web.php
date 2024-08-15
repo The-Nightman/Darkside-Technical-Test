@@ -18,8 +18,12 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
+
+    $sortBy = request('sortBy', 'name');
+    $orderBy = request('order', 'asc');
+
     // Fetch only customer details needed for list in frontend
-    $customers = CustomerData::select([
+    $customers = CustomerData::orderBy($sortBy, $orderBy)->select([
         'id',
         'name',
         'email',
