@@ -3,12 +3,15 @@ import CustomerDashboardCard from '@/Components/CustomerDashboardCard.vue';
 import Toast from '@/Components/Toast.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { CustomerCardData } from '@/types/customerCardData';
-import { Head, Link } from '@inertiajs/vue3';
-import { reactive } from 'vue';
+import { Head, Link, usePage } from '@inertiajs/vue3';
+import { reactive, ref } from 'vue';
+
 
 defineProps<{
     customers: Array<CustomerCardData>;
 }>();
+
+const params = ref(route().queryParams);
 
 const toast = reactive<{ show: boolean; message: string; success: boolean; }>({
     show: false,
@@ -22,7 +25,6 @@ const toast = reactive<{ show: boolean; message: string; success: boolean; }>({
  * @param {boolean} success - The type of the toast (success = true, error = fail).
  */
 const showToast = ({ message, success }: { message: string, success: boolean }) => {
-    console.log("message, success");
     toast.show = true;
     toast.message = message;
     toast.success = success;
@@ -46,14 +48,39 @@ const showToast = ({ message, success }: { message: string, success: boolean }) 
             <Toast v-if="toast.show" :message="toast.message" :success="toast.success" />
             <div class="py-12">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div class="px-2 pt-6 pb-12 sm:px-6 bg-white dark:bg-gray-700 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div
+                        class="px-2 pt-6 pb-12 sm:px-6 bg-white dark:bg-gray-700 overflow-hidden shadow-sm sm:rounded-lg">
                         <h2 class="text-gray-900 dark:text-gray-100">Customers</h2>
                         <div class="mt-6 border border-gray-300 dark:border-gray-600 rounded-md">
                             <div
-                                class="p-1 border-b border-gray-300 dark:border-gray-600 grid grid-cols-[min-content_auto_20%_min-content] md:grid-cols-[min-content_auto_25%_15%_min-content] lg:grid-cols-[min-content_25%_15%_auto_15%_min-content] gap-2 sm:gap-4 dark:text-gray-300">
+                                class="p-1 border-b border-gray-300 dark:border-gray-600 grid grid-cols-[min-content_auto_20%_min-content] md:grid-cols-[min-content_auto_25%_15%_min-content] lg:grid-cols-[min-content_25%_15%_auto_15%_min-content] gap-2 sm:gap-4 dark:text-gray-300 font-semibold sm:text-lg">
                                 <div class="w-10" />
                                 <div class="flex items-center">
                                     Name
+                                    <div class="flex flex-col ml-auto mr-2">
+                                        <Link :href="route('dashboard', [{ sortBy: 'name' }, { order: 'asc' }])"
+                                            class="w-12 h-fit"
+                                            :class="{ 'text-lime-500': params.sortBy === 'name' && params.order === 'asc' || !Object.keys(params).length }"
+                                            as="button">
+                                        <svg data-slot="icon" aria-hidden="true" fill="currentColor" viewBox="0 5 20 10"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path clip-rule="evenodd"
+                                                d="M9.47 6.47a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 1 1-1.06 1.06L10 8.06l-3.72 3.72a.75.75 0 0 1-1.06-1.06l4.25-4.25Z"
+                                                fill-rule="evenodd"></path>
+                                        </svg>
+                                        </Link>
+                                        <Link :href="route('dashboard', [{ sortBy: 'name' }, { order: 'desc' }])"
+                                            class="w-12 h-fit"
+                                            :class="{ 'text-red-500': params.sortBy === 'name' && params.order === 'desc' }"
+                                            as="button">
+                                        <svg data-slot="icon" aria-hidden="true" fill="currentColor" viewBox="0 5 20 10"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path clip-rule="evenodd"
+                                                d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                                fill-rule="evenodd"></path>
+                                        </svg>
+                                        </Link>
+                                    </div>
                                 </div>
                                 <div class="hidden md:flex items-center">
                                     Phone
@@ -63,6 +90,30 @@ const showToast = ({ message, success }: { message: string, success: boolean }) 
                                 </div>
                                 <div class="flex items-center">
                                     Rating
+                                    <div class="flex flex-col ml-auto mr-2">
+                                        <Link :href="route('dashboard', [{ sortBy: 'rating' }, { order: 'asc' }])"
+                                            class="w-12 h-fit"
+                                            :class="{ 'text-lime-500': params.sortBy === 'rating' && params.order === 'asc' }"
+                                            as="button">
+                                        <svg data-slot="icon" aria-hidden="true" fill="currentColor" viewBox="0 5 20 10"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path clip-rule="evenodd"
+                                                d="M9.47 6.47a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 1 1-1.06 1.06L10 8.06l-3.72 3.72a.75.75 0 0 1-1.06-1.06l4.25-4.25Z"
+                                                fill-rule="evenodd"></path>
+                                        </svg>
+                                        </Link>
+                                        <Link :href="route('dashboard', [{ sortBy: 'rating' }, { order: 'desc' }])"
+                                            class="w-12 h-fit"
+                                            :class="{ 'text-red-500': params.sortBy === 'rating' && params.order === 'desc' }"
+                                            as="button">
+                                        <svg data-slot="icon" aria-hidden="true" fill="currentColor" viewBox="0 5 20 10"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path clip-rule="evenodd"
+                                                d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                                fill-rule="evenodd"></path>
+                                        </svg>
+                                        </Link>
+                                    </div>
                                 </div>
                                 <div class="w-10" />
                             </div>
