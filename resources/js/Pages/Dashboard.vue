@@ -3,12 +3,28 @@ import CustomerDashboardCard from '@/Components/CustomerDashboardCard.vue';
 import Toast from '@/Components/Toast.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { CustomerCardData } from '@/types/customerCardData';
-import { Head, Link } from '@inertiajs/vue3';
-import { reactive } from 'vue';
+import { Head, Link, router } from '@inertiajs/vue3';
+import { onMounted, reactive, ref } from 'vue';
+
+interface QueryParams {
+    rating?: string;
+    sortBy?: string;
+    order?: string;
+}
 
 defineProps<{
     customers: Array<CustomerCardData>;
 }>();
+
+const params = ref<QueryParams>(route().queryParams);
+
+
+// use these to update what the select displays otherwise it will either be
+// blank or just go to 'Rating' when a rating is selected and page reloaded
+const ratingDisplay = ref<string>('');
+onMounted(() => {
+    ratingDisplay.value = params.value.rating || '';
+});
 
 const toast = reactive<{ show: boolean; message: string; success: boolean; }>({
     show: false,
@@ -22,7 +38,6 @@ const toast = reactive<{ show: boolean; message: string; success: boolean; }>({
  * @param {boolean} success - The type of the toast (success = true, error = fail).
  */
 const showToast = ({ message, success }: { message: string, success: boolean }) => {
-    console.log("message, success");
     toast.show = true;
     toast.message = message;
     toast.success = success;
@@ -30,6 +45,21 @@ const showToast = ({ message, success }: { message: string, success: boolean }) 
     setTimeout(() => {
         toast.show = false;
     }, 4000);
+};
+
+const handleRatingFilter = (event: Event) => {
+    const target = event.target as HTMLSelectElement;
+    const rating = target.value;
+    console.log(rating)
+    if (rating) {
+        ratingDisplay.value = rating;
+        params.value.rating = rating;
+    } else {
+        ratingDisplay.value = '';
+        delete params.value.rating;
+    }
+    // forces navigation with new query params
+    router.visit(route('dashboard', params.value));
 };
 
 </script>
@@ -46,14 +76,39 @@ const showToast = ({ message, success }: { message: string, success: boolean }) 
             <Toast v-if="toast.show" :message="toast.message" :success="toast.success" />
             <div class="py-12">
                 <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                    <div class="px-2 pt-6 pb-12 sm:px-6 bg-white dark:bg-gray-700 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div
+                        class="px-2 pt-6 pb-12 sm:px-6 bg-white dark:bg-gray-700 overflow-hidden shadow-sm sm:rounded-lg">
                         <h2 class="text-gray-900 dark:text-gray-100">Customers</h2>
                         <div class="mt-6 border border-gray-300 dark:border-gray-600 rounded-md">
                             <div
-                                class="p-1 border-b border-gray-300 dark:border-gray-600 grid grid-cols-[min-content_auto_20%_min-content] md:grid-cols-[min-content_auto_25%_15%_min-content] lg:grid-cols-[min-content_25%_15%_auto_15%_min-content] gap-2 sm:gap-4 dark:text-gray-300">
+                                class="p-1 border-b border-gray-300 dark:border-gray-600 grid grid-cols-[min-content_auto_20%_min-content] md:grid-cols-[min-content_auto_25%_15%_min-content] lg:grid-cols-[min-content_25%_15%_auto_15%_min-content] gap-2 sm:gap-4 dark:text-gray-300 font-semibold sm:text-lg">
                                 <div class="w-10" />
                                 <div class="flex items-center">
                                     Name
+                                    <div class="flex flex-col ml-auto mr-2">
+                                        <Link :href="route('dashboard', [{ ...params, sortBy: 'name', order: 'asc' }])"
+                                            class="w-12 h-fit"
+                                            :class="{ 'text-lime-500': params.sortBy === 'name' && params.order === 'asc' || !Object.keys(params).length }"
+                                            aria-label="Sort by name ascending" as="button">
+                                        <svg data-slot="icon" aria-hidden="true" fill="currentColor" viewBox="0 5 20 10"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path clip-rule="evenodd"
+                                                d="M9.47 6.47a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 1 1-1.06 1.06L10 8.06l-3.72 3.72a.75.75 0 0 1-1.06-1.06l4.25-4.25Z"
+                                                fill-rule="evenodd" />
+                                        </svg>
+                                        </Link>
+                                        <Link :href="route('dashboard', [{ ...params, sortBy: 'name', order: 'desc' }])"
+                                            class="w-12 h-fit"
+                                            :class="{ 'text-red-500': params.sortBy === 'name' && params.order === 'desc' }"
+                                            aria-label="Sort by name descending" as="button">
+                                        <svg data-slot="icon" aria-hidden="true" fill="currentColor" viewBox="0 5 20 10"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path clip-rule="evenodd"
+                                                d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                                fill-rule="evenodd" />
+                                        </svg>
+                                        </Link>
+                                    </div>
                                 </div>
                                 <div class="hidden md:flex items-center">
                                     Phone
@@ -62,7 +117,45 @@ const showToast = ({ message, success }: { message: string, success: boolean }) 
                                     Email
                                 </div>
                                 <div class="flex items-center">
-                                    Rating
+                                    <!-- z-index to not obscure buttons, negative margin to align with text below otherwise it looks uncannily off -->
+                                    <select
+                                        class="z-0 appearance-none bg-transparent border-none p-[0_2rem_0_0] -ml-[0.125rem] sm:text-lg"
+                                        name="Rating" aria-label="Rating filter" aria-describedby="ratingFilterDesc"
+                                        @change="handleRatingFilter" v-model="ratingDisplay" id="rating" placeholder="">
+                                        <option value="">Rating</option>
+                                        <option value="bronze">Bronze</option>
+                                        <option value="silver">Silver</option>
+                                        <option value="gold">Gold</option>
+                                        <option value="platinum">Platinum</option>
+                                    </select>
+                                    <span id="ratingFilterDesc" class="sr-only">Select a customer rating filter to
+                                        search
+                                        for</span>
+                                    <!-- z-index and -margin set to fix forced misalignment on small device screens, does not obscure or impact useability -->
+                                    <div class="z-[1] flex flex-col -ml-4 sm:ml-auto mr-2">
+                                        <Link :href="route('dashboard', [{ sortBy: 'rating' }, { order: 'asc' }])"
+                                            class="w-12 h-fit"
+                                            :class="{ 'text-lime-500': params.sortBy === 'rating' && params.order === 'asc' }"
+                                            aria-label="Sort by rating ascending" as="button">
+                                        <svg data-slot="icon" aria-hidden="true" fill="currentColor" viewBox="0 5 20 10"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path clip-rule="evenodd"
+                                                d="M9.47 6.47a.75.75 0 0 1 1.06 0l4.25 4.25a.75.75 0 1 1-1.06 1.06L10 8.06l-3.72 3.72a.75.75 0 0 1-1.06-1.06l4.25-4.25Z"
+                                                fill-rule="evenodd" />
+                                        </svg>
+                                        </Link>
+                                        <Link :href="route('dashboard', [{ sortBy: 'rating' }, { order: 'desc' }])"
+                                            class="w-12 h-fit"
+                                            :class="{ 'text-red-500': params.sortBy === 'rating' && params.order === 'desc' }"
+                                            aria-label="Sort by rating descending" as="button">
+                                        <svg data-slot="icon" aria-hidden="true" fill="currentColor" viewBox="0 5 20 10"
+                                            xmlns="http://www.w3.org/2000/svg">
+                                            <path clip-rule="evenodd"
+                                                d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                                                fill-rule="evenodd" />
+                                        </svg>
+                                        </Link>
+                                    </div>
                                 </div>
                                 <div class="w-10" />
                             </div>
