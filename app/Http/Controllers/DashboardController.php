@@ -73,7 +73,7 @@ class DashboardController extends Controller
             $query->where('name', 'like', "%{$search}%");
         }
 
-        $customers = $query->orderByRaw($orderByRaw)->get();
+        $customers = $query->orderByRaw($orderByRaw)->paginate(20);
 
         $customers->transform(function ($customer) {
             $customer->avatar = Storage::url($customer->avatar);

@@ -59,8 +59,8 @@ class DashboardTest extends TestCase
         $response->assertInertia(
             fn($page) => $page
                 ->component('Dashboard')
-                ->has('customers', 10)
-                ->where('customers', $expectedCustomers)
+                ->has('customers.data', 10)
+                ->where('customers.data', $expectedCustomers)
         );
     }
 
@@ -93,8 +93,8 @@ class DashboardTest extends TestCase
         $response->assertInertia(
             fn($page) => $page
                 ->component('Dashboard')
-                ->has('customers', 10)
-                ->where('customers', $expectedCustomers)
+                ->has('customers.data', 10)
+                ->where('customers.data', $expectedCustomers)
         );
     }
 
@@ -129,8 +129,8 @@ class DashboardTest extends TestCase
         $response->assertInertia(
             fn($page) => $page
                 ->component('Dashboard')
-                ->has('customers', count($expectedCustomers))
-                ->where('customers', $expectedCustomers)
+                ->has('customers.data', count($expectedCustomers))
+                ->where('customers.data', $expectedCustomers)
         );
     }
 
@@ -170,8 +170,8 @@ class DashboardTest extends TestCase
         $response->assertInertia(
             fn($page) => $page
                 ->component('Dashboard')
-                ->has('customers', count($expectedCustomers))
-                ->where('customers', $expectedCustomers)
+                ->has('customers.data', count($expectedCustomers))
+                ->where('customers.data', $expectedCustomers)
         );
     }
 }
