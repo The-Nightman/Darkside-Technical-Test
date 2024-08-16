@@ -133,4 +133,45 @@ class DashboardTest extends TestCase
                 ->where('customers', $expectedCustomers)
         );
     }
+
+    /**
+     * Test that the customer name search query functions.
+     */
+    public function test_customer_name_search_functions(): void
+    {
+        $user = User::factory()->create();
+        $customers = CustomerData::factory(9)->create();
+
+        // the sacrificial lamb
+        $johnDoe = CustomerData::factory()->create(['name' => 'John Doe']);
+        // to the slaughter
+        $customers->push($johnDoe);
+
+        $expectedCustomers = $customers->filter(function ($customer) {
+            return stripos($customer->name, 'john') !== false;
+        })->sortBy('name')
+            ->map(function ($customer) {
+                $data = $customer->only([
+                    'id',
+                    'name',
+                    'email',
+                    'phone',
+                    'rating',
+                    'avatar',
+                ]);
+                $data['avatar'] = Storage::url($data['avatar']);
+                return $data;
+            })->values()->toArray();
+
+        $response = $this
+            ->actingAs($user)
+            ->get('/dashboard?search=john');
+
+        $response->assertInertia(
+            fn($page) => $page
+                ->component('Dashboard')
+                ->has('customers', count($expectedCustomers))
+                ->where('customers', $expectedCustomers)
+        );
+    }
 }
