@@ -22,6 +22,7 @@ class DashboardController extends Controller
         $sortBy = request('sortBy', 'name');
         $orderBy = request('order', 'asc');
         $ratingFilter = request('rating', null);
+        $search = request('search', null);
 
 
         // Validate filters, PDO doesnt protect against SQL injection in the case of column names in query
@@ -29,10 +30,12 @@ class DashboardController extends Controller
             'sortBy' => $sortBy,
             'order' => $orderBy,
             'rating' => $ratingFilter,
+            'search' => $search,
         ], [
             'sortBy' => ['required', 'in:' . implode(',', $this->allowedSortBy)],
             'order' => ['required', 'in:' . implode(',', $this->allowedOrderBy)],
             'rating' => ['nullable', 'in:' . implode(',', $this->allowedRatings)],
+            'search' => ['nullable', 'string', 'max:70'],
         ]);
 
         if ($validator->fails()) {
@@ -63,6 +66,11 @@ class DashboardController extends Controller
         // check if rating filter is set before adding to query
         if ($ratingFilter) {
             $query->where('rating', $ratingFilter);
+        }
+
+        // check if name search is set before adding to query
+        if ($search) {
+            $query->where('name', 'like', "%{$search}%");
         }
 
         $customers = $query->orderByRaw($orderByRaw)->get();

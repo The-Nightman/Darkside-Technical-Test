@@ -3,13 +3,15 @@ import CustomerDashboardCard from '@/Components/CustomerDashboardCard.vue';
 import Toast from '@/Components/Toast.vue';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import { CustomerCardData } from '@/types/customerCardData';
+import useDebounce from '@/utils/debounce';
 import { Head, Link, router } from '@inertiajs/vue3';
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive, ref, watch } from 'vue';
 
 interface QueryParams {
     rating?: string;
     sortBy?: string;
     order?: string;
+    search?: string;
 }
 
 defineProps<{
@@ -18,12 +20,23 @@ defineProps<{
 
 const params = ref<QueryParams>(route().queryParams);
 
+const ratingDisplay = ref<string>(params.value.rating || '');
 
-// use these to update what the select displays otherwise it will either be
-// blank or just go to 'Rating' when a rating is selected and page reloaded
-const ratingDisplay = ref<string>('');
-onMounted(() => {
-    ratingDisplay.value = params.value.rating || '';
+// debounce search input to prevent a request on each keypress
+const search = ref<string>(params.value.search || '');
+const debouncedSearch = useDebounce((value: string) => {
+    // if search is used other filters are not needed
+    // this handles the rating select not being reset accordingly
+    ratingDisplay.value = '';
+
+    router.visit(route('dashboard', { search: value }), {
+        preserveState: true,
+        preserveScroll: true
+    });
+}, 600)
+
+watch(search, (newValue) => {
+    debouncedSearch(newValue);
 });
 
 const toast = reactive<{ show: boolean; message: string; success: boolean; }>({
@@ -50,7 +63,6 @@ const showToast = ({ message, success }: { message: string, success: boolean }) 
 const handleRatingFilter = (event: Event) => {
     const target = event.target as HTMLSelectElement;
     const rating = target.value;
-    console.log(rating)
     if (rating) {
         ratingDisplay.value = rating;
         params.value.rating = rating;
@@ -79,7 +91,21 @@ const handleRatingFilter = (event: Event) => {
                     <div
                         class="px-2 pt-6 pb-12 sm:px-6 bg-white dark:bg-gray-700 overflow-hidden shadow-sm sm:rounded-lg">
                         <h2 class="text-gray-900 dark:text-gray-100">Customers</h2>
-                        <div class="mt-6 border border-gray-300 dark:border-gray-600 rounded-md">
+                        <div class="relative flex mt-6 ">
+                            <input
+                                class="block py-2.5 px-0 w-full text-base text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 placeholder:dark:text-gray-100"
+                                type="text" maxlength="70" aria-label="Search for a customer" v-model="search"
+                                placeholder="Search for a customer">
+                            <div class="absolute bottom-3 right-2 w-6 text-gray-900 dark:text-gray-100">
+                                <svg data-slot="icon" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path clip-rule="evenodd"
+                                        d="M9 3.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11ZM2 9a7 7 0 1 1 12.452 4.391l3.328 3.329a.75.75 0 1 1-1.06 1.06l-3.329-3.328A7 7 0 0 1 2 9Z"
+                                        fill-rule="evenodd"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <div class="mt-2 border border-gray-300 dark:border-gray-600 rounded-md">
                             <div
                                 class="p-1 border-b border-gray-300 dark:border-gray-600 grid grid-cols-[min-content_auto_20%_min-content] md:grid-cols-[min-content_auto_25%_15%_min-content] lg:grid-cols-[min-content_25%_15%_auto_15%_min-content] gap-2 sm:gap-4 dark:text-gray-300 font-semibold sm:text-lg">
                                 <div class="w-10" />
