@@ -97,4 +97,40 @@ class DashboardTest extends TestCase
                 ->where('customers', $expectedCustomers)
         );
     }
+
+    /**
+     * Test that rating filter query param functions.
+     */
+    public function test_query_params_rating_filter(): void
+    {
+        $user = User::factory()->create();
+        $customers = CustomerData::factory(10)->create();
+
+        $expectedCustomers = $customers->filter(function ($customer) {
+            return $customer->rating == 'Gold';
+        })->sortBy('name')
+            ->map(function ($customer) {
+                $data = $customer->only([
+                    'id',
+                    'name',
+                    'email',
+                    'phone',
+                    'rating',
+                    'avatar',
+                ]);
+                $data['avatar'] = Storage::url($data['avatar']);
+                return $data;
+            })->values()->toArray();
+
+        $response = $this
+            ->actingAs($user)
+            ->get('/dashboard?rating=gold');
+
+        $response->assertInertia(
+            fn($page) => $page
+                ->component('Dashboard')
+                ->has('customers', count($expectedCustomers))
+                ->where('customers', $expectedCustomers)
+        );
+    }
 }
