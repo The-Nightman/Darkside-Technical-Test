@@ -21,7 +21,7 @@ class DatabaseSeedTest extends TestCase
         $this->artisan('db:seed', ['--class' => 'DatabaseSeeder']);
 
         // Check that the customer_data table has the expected number of records
-        $this->assertCount(20, CustomerData::all());
+        $this->assertCount(400, CustomerData::all());
 
         // Check that the customer_data table has the expected attributes
         $customerData = CustomerData::first();
