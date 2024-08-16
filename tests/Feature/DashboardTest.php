@@ -63,4 +63,38 @@ class DashboardTest extends TestCase
                 ->where('customers', $expectedCustomers)
         );
     }
+
+    /**
+     * Test that (sortBy name, order desc) query params function.
+     */
+    public function test_query_params_sortBy_name_order_desc(): void
+    {
+        $user = User::factory()->create();
+        $customers = CustomerData::factory(10)->create();
+
+        $expectedCustomers = $customers->sortByDesc('name')
+            ->map(function ($customer) {
+                $data = $customer->only([
+                    'id',
+                    'name',
+                    'email',
+                    'phone',
+                    'rating',
+                    'avatar',
+                ]);
+                $data['avatar'] = Storage::url($data['avatar']);
+                return $data;
+            })->values()->toArray();
+
+        $response = $this
+            ->actingAs($user)
+            ->get('/dashboard?sortBy=name&order=desc');
+
+        $response->assertInertia(
+            fn($page) => $page
+                ->component('Dashboard')
+                ->has('customers', 10)
+                ->where('customers', $expectedCustomers)
+        );
+    }
 }
